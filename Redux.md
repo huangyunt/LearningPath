@@ -68,13 +68,13 @@ const reducer = (state = initState, action) => {
 
   组件 -- `store.dispatch(action)` -- 触发reducer的执行 -- 根据type区分返回的state -- 返回值给store -- 更新state -- `store.subscribe(listener)`中listener回调函数执行。
 
-![image-20210309183756689](/Users/bytedance/Library/Application Support/typora-user-images/image-20210309183756689.png)
+![image-20210309183756689](./Picture/image-20210309183756689.png)
 
 
 
 ## React-redux
 
-![image-20210309200347890](/Users/bytedance/Library/Application Support/typora-user-images/image-20210309200347890.png)
+![image-20210309200347890](./Picture/image-20210309200347890.png)
 
 
 
@@ -110,7 +110,42 @@ const reducer = (state = initState, action) => {
 
   `mapDispatchToProps`是`connect`函数的第二个参数，用来建立 UI 组件的参数到`store.dispatch`方法的映射
 
-![image-20210310173423401](/Users/bytedance/Library/Application Support/typora-user-images/image-20210310173423401.png)
+  如果`mapDispatchToProps`是一个函数，会得到`dispatch`和`ownProps`
+
+  ```javascript
+  const mapDispatchToProps = (
+    dispatch,
+    ownProps
+  ) => {
+    return {
+      onClick: () => {
+        dispatch({
+          type: 'SET_VISIBILITY_FILTER',
+          filter: ownProps.filter
+        });
+      }
+    };
+  }
+  ```
+
+  如果`mapDispatchToProps`是一个对象，它的每个键名也是对应 UI 组件的同名参数，键值应该是一个函数，会被当作 Action creator ，返回的 Action 会由 Redux 自动发出(dispatch).
+
+  ```javascript
+  const mapDispatchToProps = {
+    onClick: (filter) => {
+      type: 'SET_VISIBILITY_FILTER',
+      filter: filter
+    };
+  }
+  ```
+
+  
+
+  ## 计数器Demo：
+
+  两个组件，按钮ComA和文本ComB，点击按钮+1，用react-redux实现通信的过程
+
+![image-20210310173423401](./Picture/image-20210310173423401.png)
 
 
 
