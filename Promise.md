@@ -36,7 +36,7 @@ fs.readFile('./c.txt', 'utf-8', function(err, data) {
 
 输出结果：
 
-![image-20210324010746141](./picture/image-20210324010746141.png)
+![image-20210324010746141](./Picture/image-20210324010746141.png)
 
 由于读取文件为异步操作，输出的结果不确定。
 
@@ -102,7 +102,7 @@ myReadFile('./a.txt')
 
 ### Promise的工作流程
 
-![image-20210321164956018](./picture/image-20210321164956018.png)
+![image-20210321164956018](./Picture/image-20210321164956018.png)
 
 
 
@@ -122,15 +122,15 @@ myReadFile('./a.txt')
 
 + Promise对象初始状态
 
-![image-20210321172121084](./picture/image-20210321172121084.png)
+![image-20210321172121084](./Picture/image-20210321172121084.png)
 
 + Promise对象成功状态
 
-![image-20210322004628047](./picture/image-20210322004628047.png)
+![image-20210322004628047](./Picture/image-20210322004628047.png)
 
 + Promise对象失败状态
 
-![image-20210322004718603](./picture/image-20210322004718603.png)
+![image-20210322004718603](./Picture/image-20210322004718603.png)
 
 
 
@@ -284,7 +284,7 @@ Promise.reject(reason)方法返回一个失败的promise对象（无论reason是
 
 输出：
 
-![image-20210321171102762](./picture/image-20210321171102762.png)
+![image-20210321171102762](./Picture/image-20210321171102762.png)
 
 
 
