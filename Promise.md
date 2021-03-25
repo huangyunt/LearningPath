@@ -134,23 +134,6 @@ myReadFile('./a.txt')
 
 
 
-### Promise可以执行多个成功/失败的回调
-
-```javascript
-        let p = new Promise((resolve, reject) => {
-            resolve('OK');
-        });
-
-        ///指定回调 - 1
-        p.then(value => {
-            console.log(value);
-        });
-        //指定回调 - 2
-        p.then(value => {
-            alert(value);
-        });
-```
-
 
 
 ### Promise.prototype.then
@@ -163,7 +146,7 @@ myReadFile('./a.txt')
 
 2. 如果返回的是非 promise 的任意值, 或者没有返回值（相当于返回undefined），新 promise 变为 resolved, *[[PromiseResult]]*为返回的值 
 
-3. 如果返回的是另一个新 promise, 此 promise 的*[[PromiseResult]]*就会成为新 promise 的*[[PromiseResult]]*
+3. 如果返回的是另一个新 promise, 此promise的状态成为新promise的状态，此 promise 的*[[PromiseResult]]*就会成为新 promise 的*[[PromiseResult]]*
 
 ```javascript
        let result = p.then(value => {
@@ -181,6 +164,8 @@ myReadFile('./a.txt')
             console.warn(reason);
         });
 ```
+
+
 
 #### Promise.prototype.then()的链式调用
 
@@ -202,7 +187,28 @@ myReadFile('./a.txt')
         })
 ```
 
-#### 异常穿透
+
+
+### Promise关键问题
+
++ #### Promise可以执行多个成功/失败的回调
+
+```javascript
+        let p = new Promise((resolve, reject) => {
+            resolve('OK');
+        });
+
+        ///指定回调 - 1
+        p.then(value => {
+            console.log(value);
+        });
+        //指定回调 - 2
+        p.then(value => {
+            alert(value);
+        });
+```
+
++ #### 异常穿透
 
 1. 当使用 promise 的 then 链式调用时, 可以在最后指定失败的回调。
 
@@ -228,15 +234,11 @@ myReadFile('./a.txt')
         });
 ```
 
++ #### 如何中断Promise链？
 
+添加一个pendding状态的promise
 
 ```javascript
-        let p = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve('OK');
-            }, 1000);
-        });
-
         p.then(value => {
             console.log(111);
             //有且只有一个方式
@@ -250,9 +252,9 @@ myReadFile('./a.txt')
         });
 ```
 
+### Promise Api
 
-
-### Promise.resolve
++ #### Promise.resolve
 
     + 如果传入的参数为 非Promise类型的对象, 则返回的结果为成功promise对象
     + 如果传入的参数为 Promise 对象, 则参数的结果决定了 resolve 的结果
@@ -269,9 +271,7 @@ myReadFile('./a.txt')
         })
 ```
 
-
-
-### Promise.reject
++ #### Promise.reject
 
 Promise.reject(reason)方法返回一个失败的promise对象（无论reason是什么）
 
@@ -286,9 +286,7 @@ Promise.reject(reason)方法返回一个失败的promise对象（无论reason是
 
 ![image-20210321171102762](./Picture/image-20210321171102762.png)
 
-
-
-### Promise.prototype.catch
++ #### Promise.prototype.catch
 
 **catch()** 方法返回一个Promise，只处理拒绝的情况。它的行为与调用[`Promise.prototype.then(undefined, onRejected)`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then)相同。
 
