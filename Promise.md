@@ -252,8 +252,6 @@ myReadFile('./a.txt')
         });
 ```
 
-
-
 ### Promise Api
 
 + #### Promise.resolve
