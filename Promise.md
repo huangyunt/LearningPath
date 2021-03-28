@@ -290,3 +290,137 @@ Promise.reject(reason)方法返回一个失败的promise对象（无论reason是
 
 **catch()** 方法返回一个Promise，只处理拒绝的情况。它的行为与调用[`Promise.prototype.then(undefined, onRejected)`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then)相同。
 
+
+
+### Async与Await
+
+Async/Await 是js异步编程的终极解决方案
+
+#### Async函数
+
+返回值规则与Promise.prototype.then()相同
+
++ 函数的返回值为 promise 对象
++ promise 对象的结果由 async 函数执行的返回值决定
+
+```javascript
+        async function main(){
+            //1. 如果返回值是一个非Promise类型的数据
+            // return 521;
+            //2. 如果返回的是一个Promise对象
+            // return new Promise((resolve, reject) => {
+            //     // resolve('OK');
+            //     reject('Error');
+            // });
+            //3. 抛出异常
+            throw "Oh NO";
+        }
+```
+
+
+
+#### Await表达式
+
++ await 右侧的表达式一般为 promise 对象, 但也可以是其它的值
++ 如果表达式是 promise 对象, await 返回的是 promise 成功的值([[PromiseResult]])
++ 如果表达式是其它值, 直接将此值作为 await 的返回值
+
+#### mentoon：
+
+1. await 必须写在 async 函数中, 但 async 函数中可以没有 await
+2. 如果 await 的 promise 失败了, 就会抛出异常, 需要通过 try...catch 捕获处理
+
+```javascript
+        async function main(){
+            let p = new Promise((resolve, reject) => {
+                // resolve('OK');
+                reject('Error');
+            })
+            //1. 右侧为promise的情况
+            // let res = await p;
+            //2. 右侧为其他类型的数据
+            // let res2 = await 20;
+            //3. 如果promise是失败的状态
+            try{
+                let res3 = await p;
+            }catch(e){
+                console.log(e);
+            }
+        }
+
+        main();
+```
+
+
+
+### 实践：
+
+```javascript
+fs.readFile('./resource/1.html', (err, data1) => {
+    if(err) throw err;
+    fs.readFile('./resource/2.html', (err, data2) => {
+        if(err) throw err;
+        fs.readFile('./resource/3.html', (err, data3) => {
+            if(err) throw err;
+            console.log(data1 + data2 + data3);
+        });
+    });
+});
+
+//async 与 await
+async function main(){
+    try{
+        //读取第一个文件的内容
+        let data1 = await mineReadFile('./resource/1x.html');
+        let data2 = await mineReadFile('./resource/2.html');
+        let data3 = await mineReadFile('./resource/3.html');
+        console.log(data1 + data2 + data3);
+    }catch(e){
+        console.log(e.code);
+    }
+}
+
+```
+
+
+
+### async await 封装ajax
+
+```javascript
+<body>
+    <button id="btn">点击获取段子</button>
+    <script>
+        //axios
+        function sendAJAX(url){
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.responseType = 'json';
+                xhr.open("GET", url);
+                xhr.send();
+                //处理结果
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState === 4){
+                        //判断成功
+                        if(xhr.status >= 200 && xhr.status < 300){
+                            //成功的结果
+                            resolve(xhr.response);
+                        }else{
+                            reject(xhr.status);
+                        }
+                    }
+                }
+            });
+        }
+
+        //段子接口地址 https://api.apiopen.top/getJoke
+        let btn = document.querySelector('#btn');
+
+        btn.addEventListener('click',async function(){
+            //获取段子信息
+            let duanzi = await sendAJAX('https://api.apiopen.top/getJoke');
+            console.log(duanzi);
+        });
+    </script>
+</body>
+```
+
