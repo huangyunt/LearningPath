@@ -347,7 +347,6 @@ Async/Await 是js异步编程的终极解决方案
                 console.log(e);
             }
         }
-
         main();
 ```
 
@@ -386,7 +385,7 @@ async function main(){
 
 ### async await 封装ajax
 
-```javascript
+```html
 <body>
     <button id="btn">点击获取段子</button>
     <script>
