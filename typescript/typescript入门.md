@@ -1,4 +1,4 @@
-# 第一章 快速入门
+# TypeScript入门
 
 ## 0、TypeScript简介
 
