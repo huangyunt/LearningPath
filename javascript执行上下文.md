@@ -237,3 +237,6 @@ fn2_EC.SC=[fn2_EC.VO].concat(fn2.[[scope]])
 =>
 fn2_EC.SC=[fn2_EC.VO, fn1_EC.VO, globalObj]
 ```
+
+
+
