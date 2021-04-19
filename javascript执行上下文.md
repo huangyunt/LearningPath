@@ -240,3 +240,69 @@ fn2_EC.SC=[fn2_EC.VO, fn1_EC.VO, globalObj]
 
 
 
+#### this 指向
+
+**this 的指向，是在函数被调用的时候确定的。**也就是执行上下文被创建时确定的。
+
+关于 this 的指向，其实最主要的是三种场景，分别是**全局上下文中 this**、**函数中 this** 和**构造函数中 this**。
+
+###### 全局上下文中 this
+
+在全局上下文中，this 指代全局对象。
+
+```javascript
+// 在浏览器环境中，全局对象是 window 对象：
+console.log(this === window); // true
+a = 1;
+this.b = 2;
+console.log(window.a); // 1
+console.log(window.b); // 2
+console.log(b); // 2
+```
+
+###### 函数中 this
+
+函数中的 this 指向是怎样一种情况呢？
+
+**如果被调用的函数，被某一个对象所拥有，那么其内部的 this 指向该对象；如果该函数被独立调用，那么其内部的 this 指向 undefined（非严格模式下指向 window）。**
+
+```js
+var a = 1;
+function fn() {
+  console.log(this.a)
+}
+var obj = {
+  a: 2,
+  fn: fn
+}
+obj.fn(); // 2
+fn(); // 1
+```
+
+###### 构造函数中 this
+
+要清楚构造函数中 this 的指向，则必须先了解通过 new 操作符调用构造函数时所经历的阶段。
+
+通过 new 操作符调用构造函数时所经历的阶段如下：
+
+1. 创建一个新对象；
+2. 将构造函数的 this 指向这个新对象；
+3. 执行构造函数内部代码；
+4. 返回这个新对象。
+
+所以从上述流程可知，**对于构造函数来说，其内部 this 指向新创建的对象实例**。
+
+```javascript
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+var ttsy = new Person('ttsy', 24);
+console.log(ttsy.name);  // ttsy
+console.log(ttsy.age);  // 24
+```
+
+##### 需要注意的是，在 ES6 中箭头函数中，this 是在函数声明的时候确定的(箭头函数不绑定this，会捕获上下文的this)
+
+
+
