@@ -105,7 +105,7 @@ React.createRef调用后可以返回一个容器，该容器可以存储被ref�
 
 旧版本：
 
-![image-20210504011003959](/Users/bytedance/Library/Application Support/typora-user-images/image-20210504011003959.png)
+![image-20210504015401966](./Picture/image-20210504015401966.png)
 
 ​    **1.** **初始化阶段:** 由ReactDOM.render()触发---初次渲染
 
@@ -137,5 +137,5 @@ componentWillReceiveProps：组件将要接收新的props，第一次传入props
 
 新版本：
 
-![image-20210504011336775](/Users/bytedance/Library/Application Support/typora-user-images/image-20210504011336775.png)
+![image-20210504015321638](./Picture/image-20210504015321638.png)
 
