@@ -131,7 +131,7 @@ React.createRef调用后可以返回一个容器，该容器可以存储被ref�
 
 + ```componentWillUnmount()```
 
-不想对状态更改也想更新 -- ```forceUpdate()```(不收阀门shouldComponentUpdate控制)
+不想对状态更改也想更新 -- ```forceUpdate()```(不受阀门shouldComponentUpdate控制)
 
 componentWillReceiveProps：组件将要接收新的props，第一次传入props不会调用，实际上钩子名字为componentWillReceiveNewProps
 
@@ -139,3 +139,54 @@ componentWillReceiveProps：组件将要接收新的props，第一次传入props
 
 ![image-20210504015321638](./Picture/image-20210504015321638.png)
 
+
+
+## DOM的Diffing算法
+
+![image-20210504231622840](./Picture/image-20210504231622840.png)
+
+1. react/vue中的key有什么作用？（key的内部原理是什么？）
+
+   虚拟DOM中key的作用：
+
++ 简单的说: key是虚拟DOM对象的标识, 在更新显示时key起着极其重要的作用。
+
++ 详细的说: 当状态中的数据发生变化时，react会根据【新数据】生成【新的虚拟DOM】, 
+
+​       随后React进行【新虚拟DOM】与【旧虚拟DOM】的diff比较，比较规则如下：
+
+​      a. 旧虚拟DOM中找到了与新虚拟DOM相同的key：
+
+​          若虚拟DOM中内容没变, 直接使用之前的真实DOM 
+
+​          若虚拟DOM中内容变了, 则生成新的真实DOM，随后替换掉页面中之前的真实DOM
+
+​      b. 旧虚拟DOM中未找到与新虚拟DOM相同的key
+
+​          根据数据创建新的真实DOM，随后渲染到到页面
+
+
+
+2. 为什么遍历列表时，key最好不要用index?
+
+​      用index作为key可能会引发的问题：
+
++ 若对数据进行：逆序添加、逆序删除等破坏顺序操作:
+
+​       会产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低。
+
++  如果结构中还包含输入类的DOM：
+
+​        会产生错误DOM更新 ==> 界面有问题。
+
++ 如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，
+
+​      仅用于渲染列表用于展示，使用index作为key是没有问题的。
+
+​                  
+
+3. 开发中如何选择key?:
+
++ 最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。
+
++ 如果确定只是简单的展示数据，用index也是可以的。
