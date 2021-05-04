@@ -1,5 +1,9 @@
 # React
 
+React用于编写SPA（单页应用）
+
+## Ref
+
 #### 回调形式Ref调用次数
 
 如果 `ref` 回调函数是以内联函数的方式定义
@@ -22,7 +26,7 @@ React.createRef调用后可以返回一个容器，该容器可以存储被ref�
 
 
 
-### React事件处理
+## React事件处理
 
 1. 通过onXxx属性指定事件处理函数(注意大小写)
 
@@ -34,7 +38,7 @@ React.createRef调用后可以返回一个容器，该容器可以存储被ref�
 
 
 
-### 高阶函数
+## 高阶函数
 
 1. 若A函数，接收的参数是一个函数，那么A就可以称之为高阶函数。
 
@@ -190,3 +194,11 @@ componentWillReceiveProps：组件将要接收新的props，第一次传入props
 + 最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。
 
 + 如果确定只是简单的展示数据，用index也是可以的。
+
+
+
+## React-Staging
+
+React-Staging项目结构
+
+![image-20210505001602936](./Picture/image-20210505001602936.png)
