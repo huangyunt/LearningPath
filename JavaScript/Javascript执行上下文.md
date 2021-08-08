@@ -49,7 +49,7 @@ ECStack.pop();
 ECStack.pop();
 ```
 
-![image-20210414214146564](Picture\image-20210414214146564.png)
+![image-20210414214146564](../Picture\image-20210414214146564.png)
 
 在一个执行上下文中，最重要的三个属性分别是**变量对象（Variable Object）**、**作用域链（Scope Chain）**和 **this 指向**。
 
