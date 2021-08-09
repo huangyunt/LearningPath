@@ -31,10 +31,22 @@
 原型对象也是对象啊，它的__proto__属性，又指向谁呢？
 同理，指向它的构造函数的原型对象呗。这里是Object.prototype.
 
-最后，Object.prototype的__proto__属性指向null。
+最后，Object.prototype的__proto__属性指向null（原型链的终点）
 
 
 
 总结：
-1.对象有属性__proto__,指向该对象的构造函数的原型对象。
-2.方法除了有属性__proto__,还有属性prototype，prototype指向该方法的原型对象。
+1. 对象有属性__proto__,指向该对象的构造函数的原型对象。
+2. 方法除了有属性__proto__,还有属性prototype，prototype指向该方法的原型对象。
+3. 标准化获取对象的构造函数的原型：不要用obj.__proto__，用Object.getPrototypeof(obj)。
+
+
+
+## 原型对象中的constructor
+
+看一段代码:
+
+```
+function 
+```
+
