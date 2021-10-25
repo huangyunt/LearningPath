@@ -231,7 +231,10 @@ myReadFile('./a.txt')
             console.log(333);
         }).catch(reason => {
             console.warn(reason);
-        });
+        }).then(value => {
+            console.log(value)
+            console.log('hyz')
+        })
 ```
 
 + #### 如何中断Promise链？
