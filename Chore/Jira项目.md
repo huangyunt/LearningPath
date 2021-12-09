@@ -102,3 +102,21 @@ PATCH /tickets/12 // 修改
 DELETE /tickets/12 // 删除
 ```
 
+
+
+#### d.ts类型文件
+
+改造js文件为ts文件后，引入的qs库报错
+
+![image-20211110193223804](C:\Users\H\AppData\Roaming\Typora\typora-user-images\image-20211110193223804.png)
+
+```yarn add @types/qs --save-dev   ``` 安装对应的ts补丁文件
+
+**d.ts文件的作用：说明书文件**
+
+JS 文件 + .d.ts 文件   === ts 文件
+
+.d.ts 文件可以让 JS 文件继续维持自己JS文件的身份，而拥有TS的类型保护
+
+一般写业务代码不会用到，但是点击类型跳转一般会跳转到 .d.ts文件
+

@@ -235,6 +235,10 @@ myReadFile('./a.txt')
             console.log(value)
             console.log('hyz')
         })
+// output:
+// Err
+// undefined
+// hyz
 ```
 
 + #### 如何中断Promise链？

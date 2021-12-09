@@ -1,6 +1,8 @@
 # Javascript手写题
 
-#### 1. 实现一个new
+
+
+#### 实现一个new
 
 **new的具体步骤**
 
@@ -46,7 +48,7 @@
 
 
 
-#### 2. 实现一个Object.create
+#### 实现一个Object.create
 
 Object.create(proto)创建一个空对象，proto为空对象的"___proto___"
 
@@ -61,6 +63,100 @@ export function create(obj) {
     throw new TypeError();
   }
   return Object.setPrototypeOf({}, obj);
+}
+```
+
+
+
+#### 虾皮笔试题
+
+十分有水平的一道题，综合了new原理，原型链+instanceof原理
+
+```javascript
+    function Person() {
+
+    }
+    let person1 = new Person();
+    Person.prototype = {
+        name: 'ee',
+        sayName: () => {
+
+        }
+    }    
+    // Person 的 prototype 已经改变，而 person1.__proto__ 指向一开始的 Person.prototype
+    console.log('person1 instanceof Person: ', person1 instanceof Person) // 为啥是false
+    // 所有的对象都继承自 Object，除了 null 或者你把最顶层的 prototype 也给改了
+    console.log('person1 instanceof Object: ', person1 instanceof Object) // 为啥是true
+    // person1 本身没有 constructor, 会沿着原型链找，
+    // person1.constructor === person1.__proto__.constructor
+    // 而上面也说了 person1.__proto__ 并没有因为 Person.prototype 改变而改变
+    // 这里需要注意的是：
+    // Person 本身就是 constructor
+    // 初始情况下
+    // Person.prototype => Person.prototype
+    // Person.prototype.constructor => Person
+    console.log('person1.constructor == Person: ', person1.constructor == Person) // 为啥是true
+    // 上面是 true, 下面就好说了
+    console.log('person1.constructor == Object: ', person1.constructor == Object) // 为啥是false
+```
+
+
+
+#### 实现消息订阅
+
+```javascript
+class EventCenter {
+    /**
+     * @param {Map<string, Array<Function>} handlers
+     */
+    constructor(handlers=new Map()) {
+        this.handlers = handlers;
+    }
+    /**
+     * @param {Function} handler
+     * @param {string} type
+    */
+    addEventListener(type, newHandler) {
+        let hanlder = this.handlers.has(type);
+        if (hanlder) {
+            this.handlers.set(type, [...this.handlers.get(type), newHandler]) 
+        }
+        else {
+            this.handlers.set(type, [newHandler]);
+        }
+    }
+    /**
+     * @param {string} type
+     * @param {Array} params
+    */
+    dispatchEvent(type, params=[]) {
+        const handler = this.handlers.get(type);
+        handler && handler.forEach((callback) => {
+            callback(...params);
+        })
+    }
+    /**
+     * 
+     * @param {string} type 
+     * @param {Function} delHandler 
+     * @returns 
+     */
+    removeEventListener(type, delHandler) {
+        if (!this.handlers.has(type)) {
+            return new Errow("Unable to delete")
+        }
+        if (delHanlder) {
+            const oldHandlers = this.handlers.get(type);
+            const ind = oldHandlers.indexOf(delHandler);
+            if (ind === -1) {
+                return new Errow("Unable to delete")
+            }
+            oldHandlers.splice(ind, 1);
+        }
+        else {
+            this.handlers.delete(type);
+        }
+    }
 }
 ```
 
