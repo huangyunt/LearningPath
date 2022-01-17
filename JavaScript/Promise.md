@@ -136,17 +136,21 @@ myReadFile('./a.txt')
 
 
 
-### Promise.prototype.then
+### Promise Api
 
-#### Promise.prototype.then()返回的新 promise 的结果状态由什么决定?
+#### Promise.prototype.then
 
-由 then()指定的回调函数执行的结果决定
+```then()``` 方法返回一个 ```Promise```。它最多需要有两个参数：Promise 的成功和失败情况的回调函数。
+
+##### Promise.prototype.then()返回的新 promise 的结果状态由什么决定?
+
+​       **由 then()指定的回调函数执行的结果决定**
 
 1. 如果抛出异常, 新 promise 变为 rejected, *[[PromiseResult]]*为抛出的异常 
 
 2. 如果返回的是非 promise 的任意值, 或者没有返回值（相当于返回undefined），新 promise 变为 resolved, *[[PromiseResult]]*为返回的值 
 
-3. 如果返回的是另一个新 promise, 此promise的状态成为新promise的状态，此 promise 的*[[PromiseResult]]*就会成为新 promise 的*[[PromiseResult]]*
+3. ***如果返回的是另一个新 promise, 此promise的状态成为新promise的状态，此 promise 的[[PromiseResult]]就会成为新 promise 的[[PromiseResult]]***
 
 ```javascript
        let result = p.then(value => {
@@ -165,17 +169,16 @@ myReadFile('./a.txt')
         });
 ```
 
-
-
-#### Promise.prototype.then()的链式调用
+##### then的链式调用
 
 ```javascript
-        let p = new Promise((resolve, reject) => {
+        
+let p = new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve('OK');
             }, 1000);
         });
-
+// 链式调用
         p.then(value => {
             return new Promise((resolve, reject) => {
                 resolve("success");
@@ -187,11 +190,47 @@ myReadFile('./a.txt')
         })
 ```
 
+#### Promise.resolve
+
++ 如果传入的参数为 非Promise类型的对象, 则返回的结果为成功promise对象
++ 如果传入的参数为 Promise 对象, 则参数的结果决定了 resolve 的结果
+
+```javascript
+        let p1 = Promise.resolve(521);
+        let p2 = Promise.resolve(new Promise((resolve, reject) => {
+            // resolve('OK');
+            reject('Error');
+        }));
+        // console.log(p2);
+        p2.catch(reason => {
+            console.log(reason);
+        })
+```
+
+#### Promise.reject
+
+Promise.reject(reason)方法返回一个失败的promise对象（无论reason是什么）
+
+```javascript
+        let p3 = Promise.reject(new Promise((resolve, reject) => {
+            resolve('OK');
+        }));
+        console.log(p3);
+```
+
+输出：
+
+![image-20210321171102762](../Picture/image-20210321171102762.png)
+
+#### Promise.prototype.catch
+
+**catch()** 方法返回一个Promise，只处理拒绝的情况。它的行为与调用[`Promise.prototype.then(undefined, onRejected)`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then)相同。
+
 
 
 ### Promise关键问题
 
-+ #### Promise可以执行多个成功/失败的回调
+#### Promise可以执行多个成功/失败的回调
 
 ```javascript
         let p = new Promise((resolve, reject) => {
@@ -208,7 +247,7 @@ myReadFile('./a.txt')
         });
 ```
 
-+ #### 异常穿透
+#### 异常穿透
 
 1. 当使用 promise 的 then 链式调用时, 可以在最后指定失败的回调。
 
@@ -230,7 +269,7 @@ myReadFile('./a.txt')
         }).then(value => {
             console.log(333);
         }).catch(reason => {
-            console.warn(reason);
+            console.warn(reason); // 如果前面then有设置失败的回调，则会在前面就被捕获
         }).then(value => {
             console.log(value)
             console.log('hyz')
@@ -241,7 +280,7 @@ myReadFile('./a.txt')
 // hyz
 ```
 
-+ #### 如何中断Promise链？
+#### 如何中断Promise链？
 
 添加一个pendding状态的promise
 
@@ -258,46 +297,6 @@ myReadFile('./a.txt')
             console.warn(reason);
         });
 ```
-
-### Promise Api
-
-+ #### Promise.resolve
-
-    + 如果传入的参数为 非Promise类型的对象, 则返回的结果为成功promise对象
-    + 如果传入的参数为 Promise 对象, 则参数的结果决定了 resolve 的结果
-
-```javascript
-        let p1 = Promise.resolve(521);
-        let p2 = Promise.resolve(new Promise((resolve, reject) => {
-            // resolve('OK');
-            reject('Error');
-        }));
-        // console.log(p2);
-        p2.catch(reason => {
-            console.log(reason);
-        })
-```
-
-+ #### Promise.reject
-
-Promise.reject(reason)方法返回一个失败的promise对象（无论reason是什么）
-
-```javascript
-        let p3 = Promise.reject(new Promise((resolve, reject) => {
-            resolve('OK');
-        }));
-        console.log(p3);
-```
-
-输出：
-
-![image-20210321171102762](../Picture/image-20210321171102762.png)
-
-+ #### Promise.prototype.catch
-
-**catch()** 方法返回一个Promise，只处理拒绝的情况。它的行为与调用[`Promise.prototype.then(undefined, onRejected)`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then)相同。
-
-
 
 ### Async与Await
 
@@ -432,5 +431,33 @@ async function main(){
 
 
 
-#### 宏任务和微任务
+```
+async function async1() {
+    console.log('async1 start')
+    await async2()
+    console.log('async1 end')
+}
+    
+async function async2() {
+    console.log('async2')
+}
+    
+console.log('script start')
+
+setTimeout(function () {
+    console.log('setTimeout')
+}, 0)
+    
+async1();
+    
+new Promise(function (resolve) {
+    console.log('promise1')
+    resolve()
+}).then(function () {
+    console.log('promise2')
+})
+    
+console.log('script end')
+
+```
 
