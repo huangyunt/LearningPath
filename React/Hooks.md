@@ -127,6 +127,17 @@ function Counter() {
 
 
 
+##### useLayoutEffect vs. useEffect
+
+useLayoutEffect 和 useEffect 的传参一致，但有以下区别
+
+1. 执行时机不同。useLayoutEffect 的入参函数会在 react 更新 DOM 树后同步调用（**其实就是dom树更新，浏览器重绘前会执行useLayoutEffect里的函数，此时比如去拿 style 或者 dom 尺寸，都是游览器即将渲染的那一次的尺寸，而不是现在页面上展示的尺寸**），useEffect 为异步调用（useEffect 则肯定是在游览器渲染完后才执行），所以应该尽可能使用标准的 `useEffect` 以避免阻塞视觉更新
+2. useLayoutEffect 在 development 模式下 SSR 会有警告⚠️
+
+通常情况下 useLayoutEffect 会用在做动效和记录 layout 的一些特殊场景（比如防止渲染闪烁，在渲染前再给你个机会去改 DOM）。一般不需要使用 useLayoutEffect。
+
+
+
 ### useRef
 
 当需要存放一个数据，需要无论在哪里都取到最新状态时，需要使用 useRef，**ref 是一种可变数据。**
@@ -415,3 +426,20 @@ function Me(props: { money: number }) {
 2. 第二种常用在嵌套层级不深的业务代码中，比如表单场景。**优点是顶层 Grandpa 的业务收敛度很高，一眼能看清 UI 结构及状态绑定关系，相当于拍平了 React 组件树**
 3. 第三种比较通用，适合复杂嵌套透传场景。缺点是范式代码较多，且会造成 react dev tools 层级过多；Context 无法在父组件看出依赖关系，必须到子组件文件中才能知道数据来源
 
+
+
+### 组件的生命周期
+
+React 函数组件的执行阶段分为：
+
+1. Render 阶段
+
+此阶段就是函数本体的执行阶段
+
+1. Commit 阶段
+
+Commit 阶段是拿着 render 返回的结果，去同步 DOM 更新的阶段。render 和 commit 分开以达到批量更新 DOM 的目的，也是 react 之后推出并行模式的设计基础。对于我们代码能感知到的部分就是 useLayoutEffect
+
+1. DOM 更新结束
+
+此时 DOM 已经更新完成，代码能感知到的部分 代码上的体现就是执行 useEffect
