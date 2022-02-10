@@ -443,3 +443,52 @@ Commit 阶段是拿着 render 返回的结果，去同步 DOM 更新的阶段。
 1. DOM 更新结束
 
 此时 DOM 已经更新完成，代码能感知到的部分 代码上的体现就是执行 useEffect
+
+
+
+### React 性能优化思路
+
+我觉得React 性能优化的理念的主要方向就是这两个：
+
+1. **减少重新 render 的次数。因为在 React 里最重(花时间最长)的一块就是 reconciliation(简单的可以理解为 diff)，如果不 render，就不会 reconciliation。**
+2. **减少计算的量。主要是减少重复计算，对于函数式组件来说，每次 render 都会重新从头开始执行函数调用。**
+
+在使用类组件的时候，使用的 React 优化 API 主要是：`shouldComponentUpdate`和  `PureComponent`，这两个 API 所提供的解决思路都是为了**减少重新 render 的次数**，主要是减少父组件更新而子组件也更新的情况。
+
+但是在函数式组件里面没有声明周期也没有类，那如何来做性能优化呢？
+
+**先分个类，组件什么时候会重新执行？**
+
+1. **组件自己的状态改变**
+2. **父组件重新渲染，导致子组件重新渲染，但是父组件的 props 没有改变**
+3. **父组件重新渲染，导致子组件重新渲染，但是父组件传递的 props 改变**
+
+
+
+针对第二点，在FC中，可以通过memo减少rerender
+
+```react
+function Component(props) {
+   /* 使用 props 渲染 */
+}
+const MyComponent = React.memo(Component);
+```
+
+通过 `React.memo` 包裹的组件在 props 不变的情况下，这个被包裹的组件是不会重新渲染的(相当于PureComonent)
+
+默认情况下其只会对 props 的复杂对象做浅层对比(浅层对比就是只会对比前后两次 props 对象引用是否相同，不会对比对象里面的内容是否相同)，如果你想要控制对比过程，那么请将自定义的比较函数通过第二个参数传入来实现。
+
+```react
+function MyComponent(props) {
+  /* 使用 props 渲染 */
+}
+function areEqual(prevProps, nextProps) {
+  /*
+  如果把 nextProps 传入 render 方法的返回结果与
+  将 prevProps 传入 render 方法的返回结果一致则返回 true，
+  否则返回 false
+  */
+}
+export default React.memo(MyComponent, areEqual);
+```
+
