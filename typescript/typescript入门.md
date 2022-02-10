@@ -80,6 +80,8 @@
   |  tuple  |       [4,5]       | 元素，TS新增类型，固定长度数组 |
   |  enum   |    enum{A, B}     |       枚举，TS中新增类型       |
 
+
+
 - number
 
   - ```typescript
@@ -191,6 +193,25 @@
     }
     let c: Color = Color.Green;
     ```
+
+定义函数类型：
+
+```typescript
+// 箭头函数可以以这种形式定义
+const add: (a: number, b: number) => number = (a, b) => {
+    return a + b;
+};
+
+// 也可以这种形式
+interface Iadd {
+    (x: number, y: number): number;
+}
+const add: Iadd = (a, b) => {
+    return a + b;
+}
+```
+
+
 
 - 类型断言
 
