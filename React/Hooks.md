@@ -492,3 +492,73 @@ function areEqual(prevProps, nextProps) {
 export default React.memo(MyComponent, areEqual);
 ```
 
+
+
+### 组件性能优化
+
+React 组件是一个树形结构，且每个节点都是懒计算的（类似于 Thunk 的概念）。当一个节点不需要重新计算（重绘）时，他的子树都不会计算（重绘）。**所以我们做性能优化的目标，就是在尽量离根节点近的位置，拦截不必要的节点重算，从而减少重绘的计算量。**
+
+##### React.memo
+
+阻止节点重绘主要通过 React.memo 方法生成特殊的组件节点。它接受两个传参：
+
+1. ```CSS
+   React.memo(Component, areEqual);
+   ```
+
+   Component
+
+组件
+
+1. areEqual
+
+比较函数，比较函数的入参有两个，arg0 为 前一次渲染的 props, arg1 为本次渲染的 props。如果返回 true，则该节点本次渲染将被标记为无需重新计算，从而使其所有子节点、孙子节点都无需计算。
+
+areEqual 如果不传，默认使用 
+
+```Lisp
+(prevProps, nextProps) => shallowEqual(prevProps, nextProps)
+```
+
+做为比较函数。
+
+
+
+##### 如何定位优化点
+
+使用前一章节提到 React DevTools 中的 Profiling 功能，record 发生卡顿的操作，从耗时长的组件逐个查看，找到那些跟此次操作无关的上层渲染节点，尝试使用 React.memo 包裹这些组件。
+
+
+
+##### 不要为了优化而优化
+
+在没有性能问题前，不用去纠结是否要用 Profiling、React.memo、useMemo、useCallback 去优化性能，这些不一定能带来性能提升，反而肯定会带来首屏的性能下降。大多数情况下，React 现有算法以能满足性能需求。
+
+
+
+##### 对于一个组件，有三样东西会让她重绘
+
+1. State 变更
+2. 依赖的 context 变更
+3. 父组件重绘
+
+所以用 React.memo 包裹之后，并不是说性能就会有多大的提高。如果组件中依赖的 context 中，有一部分并不是此组件需要的数据，但会经常变更，也会导致组件经常重绘。这时候我们可以增加一层组件，把依赖 context 中的数据，通过增加的一层父组件取出来，然后通过 props 传给真正渲染的组件，把 React.memo 加在真正渲染的组件上，来达到屏蔽 context 变更引起的重绘问题。
+
+```JavaScript
+import { useMemo, useContext } from 'react';
+import { SomeContext } from './SomeContext';
+
+function PickContextData(props) {
+  const ctx = useContext(SomeContext);
+  const someDataFromContext = useMemo(() => {
+    return ctx.data;
+  }, [ctx.data]);
+  return <RenderComponent data={someDataFromContext} {...props} />
+}
+
+const RenderComponent = React.memo((props) => {
+  // 略
+});
+```
+
+更通用点，可以封装出 react-redux 的 connect 函数，传入 selector 来取所需的 Context 数据。
