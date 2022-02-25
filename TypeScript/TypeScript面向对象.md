@@ -59,8 +59,8 @@
   - TS中属性具有三种修饰符：
 
     - public（默认值），可以在类、子类和对象中修改
-    - protected ，可以在类、子类中修改
-    - private ，可以在类中修改
+    - protected ，可以在类、子类中修改，不能在对象中修改和访问
+    - private ，仅仅能在这个类中进行在这个属性的访问。在子类和类的实现的对象中都不能访问和修改
 
   - 示例：
 
@@ -118,6 +118,7 @@
         }
         
         const p = new Person('孙悟空', 18);
+        console.log(p.name) // 不能访问
         p.name = '猪八戒';// 不能修改
         ```
 
@@ -142,7 +143,7 @@
         
             constructor(name: string, age: number){
                 super(name, age);
-                this.name = name; //子类中不能修改
+                this.name = name; //子类中不能修改和访问
             }
         }
         

@@ -1,6 +1,6 @@
 # TypeScript入门
 
-## 0、TypeScript简介
+### TypeScript简介
 
 1. TypeScript是JavaScript的超集。
 2. 它对JS进行了扩展，向JS中引入了类型的概念，并添加了许多新的特性。
@@ -10,7 +10,7 @@
 
 
 
-## 1、TypeScript 开发环境搭建
+### TypeScript 开发环境搭建
 
 1. 下载Node.js
    - 64位：https://nodejs.org/dist/v14.15.1/node-v14.15.1-x64.msi
@@ -33,7 +33,7 @@
    
      
 
-## 2、基本类型
+### 基本类型
 
 - 类型声明
 
@@ -196,10 +196,9 @@
     const green = Color.Green;
     ```
 
-    
-
+  
   + 定义常量枚举（只能通过键获取值）
-
+  
     ```typescript
     const enum Color {
       Red = 0,
@@ -214,25 +213,24 @@
     const red = 0 /* Red */;
     const green = 1 /* Green */;
     ```
-
   
 
-定义函数类型：
++ 定义函数类型：
 
-```typescript
-// 箭头函数可以以这种形式定义
-const add: (a: number, b: number) => number = (a, b) => {
-    return a + b;
-};
-
-// 也可以这种形式
-interface Iadd {
-    (x: number, y: number): number;
-}
-const add: Iadd = (a, b) => {
-    return a + b;
-}
-```
+  + ```typescript
+    // 箭头函数可以以这种形式定义
+    const add: (a: number, b: number) => number = (a, b) => {
+        return a + b;
+    };
+    
+    // 也可以这种形式
+    interface Iadd {
+        (x: number, y: number): number;
+    }
+    const add: Iadd = (a, b) => {
+        return a + b;
+    }
+    ```
 
 
 
@@ -254,9 +252,33 @@ const add: Iadd = (a, b) => {
         let strLength: number = (<string>someValue).length;
         ```
 
-        
 
-## 3、编译选项
++ **d.ts文件/declare**
+
+  + 安装第三方模块（例如lodash）时
+
+  ![image-20220225193949940](..\Picture\image-20220225193949940.png)
+
+  原因是lodash是使用js编写的，没有类型声明，如下，camelCase函数没有类型声明
+
+  ```typescript
+  import { camelCase } from 'lodash';
+  const res = camelCase('hello guy')
+  ```
+
+  这时候可以使用**declare**（其实就是一个成员在定义的时候没有声明，比如node装第三方模块，大部分都是js写的，这时候使用declare做一个单独的声明）对函数声明
+
+  ```typescript
+  import { camelCase } from 'lodash';
+  declare function camelCase(input: string): string
+  const res = camelCase('hello guy')
+  ```
+
+  **其他解决方案：**安装d.ts文件（专门用来做类型声明的文件，应该为开发依赖）
+
+  
+
+### 编译选项
 
 - 自动编译文件
 
@@ -517,8 +539,10 @@ const add: Iadd = (a, b) => {
             - noEmitOnError
               - 有错误的情况下不进行编译
               - 默认值：false
+              
+              
 
-## 4、webpack
+### webpack
 
 - 通常情况下，实际开发中我们都需要使用构建工具对代码进行打包，TS同样也可以结合构建工具一起使用，下边以webpack为例介绍一下如何结合构建工具使用TS。
 
@@ -632,7 +656,7 @@ const add: Iadd = (a, b) => {
 
      
 
-## 5、Babel
+### Babel
 
 - 经过一系列的配置，使得TS和webpack已经结合到了一起，除了webpack，开发中还经常需要结合babel来对代码进行转换以使其可以兼容到更多的浏览器，在上述步骤的基础上，通过以下步骤再将babel引入到项目中。
 
