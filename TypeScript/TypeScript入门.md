@@ -35,248 +35,177 @@
 
 ### 基本类型
 
-- 类型声明
+##### 类型声明
 
-  - 类型声明是TS非常重要的一个特点
+- 类型声明是TS非常重要的一个特点
 
-  - 通过类型声明可以指定TS中变量（参数、形参）的类型
+- 通过类型声明可以指定TS中变量（参数、形参）的类型
 
-  - 指定类型后，当为变量赋值时，TS编译器会自动检查值是否符合类型声明，符合则赋值，否则报错
+- 指定类型后，当为变量赋值时，TS编译器会自动检查值是否符合类型声明，符合则赋值，否则报错
 
-  - 简而言之，类型声明给变量设置了类型，使得变量只能存储某种类型的值
+- 简而言之，类型声明给变量设置了类型，使得变量只能存储某种类型的值
 
-  - 语法：
+- 语法：
+
+  - ```typescript
+    let 变量: 类型;
+    
+    let 变量: 类型 = 值;
+    
+    function fn(参数: 类型, 参数: 类型): 类型{
+        ...
+    }
+    ```
+
+
+
+##### 自动类型判断
+
+- TS拥有自动的类型判断机制
+- 当对变量的声明和赋值是同时进行的，TS编译器会自动判断变量的类型
+- 所以如果你的变量的声明和赋值时同时进行的，可以省略掉类型声明
+
+
+
+##### 类型
+
+|  类型   |       例子        |              描述              |
+| :-----: | :---------------: | :----------------------------: |
+| number  |    1, -33, 2.5    |            任意数字            |
+| string  | 'hi', "hi", `hi`  |           任意字符串           |
+| boolean |    true、false    |       布尔值true或false        |
+| 字面量  |      其本身       |  限制变量的值就是该字面量的值  |
+|   any   |         *         |            任意类型            |
+| unknown |         *         |         类型安全的any          |
+|  void   | 空值（undefined） |     没有值（或undefined）      |
+|  never  |      没有值       |          不能是任何值          |
+| object  |  {name:'孙悟空'}  |          任意的JS对象          |
+|  array  |      [1,2,3]      |           任意JS数组           |
+|  tuple  |       [4,5]       | 元素，TS新增类型，固定长度数组 |
+|  enum   |    enum{A, B}     |       枚举，TS中新增类型       |
+
+
+
+##### **enum 枚举类型**
+
+- ```typescript
+  enum Color {
+    Red = 0,
+    Green,
+    Blue,
+  }
+  // 使用
+  const red = Color.Red;
+  const green = Color.Green;
+  
+  // 编译成js后，枚举类型实际上是一个双向键值对对象（可以通过键获取值也可以通过值获取键）
+  "use strict";
+  var Color;
+  (function (Color) {
+      Color[Color["Red"] = 0] = "Red";
+      Color[Color["Green"] = 1] = "Green";
+      Color[Color["Blue"] = 2] = "Blue";
+  })(Color || (Color = {}));
+  // 使用
+  const red = Color.Red;
+  const green = Color.Green;
+  ```
+
+
++ 定义常量枚举（只能通过键获取值）
+
+  ```typescript
+  const enum Color {
+    Red = 0,
+    Green,
+    Blue,
+  }
+  const red = Color.Red;
+  const green = Color.Green;
+  
+  // 编译成js
+  "use strict";
+  const red = 0 /* Red */;
+  const green = 1 /* Green */;
+  ```
+
+
+
+##### 定义函数类型
+
++ ```typescript
+  // 箭头函数可以以这种形式定义
+  const add: (a: number, b: number) => number = (a, b) => {
+      return a + b;
+  };
+  
+  // 也可以这种形式
+  interface Iadd {
+      (x: number, y: number): number;
+  }
+  const add: Iadd = (a, b) => {
+      return a + b;
+  }
+  ```
+
+
+
+##### 类型别名
+
+<img src="..\Picture\image-20220225230844666.png" alt="image-20220225230844666" style="zoom:23%;" />
+
+
+
+##### 类型断言
+
+- 有些情况下，变量的类型对于我们来说是很明确，但是TS编译器却并不清楚，此时，可以通过类型断言来告诉编译器变量的类型，断言有两种形式：
+
+  - 第一种
 
     - ```typescript
-      let 变量: 类型;
-      
-      let 变量: 类型 = 值;
-      
-      function fn(参数: 类型, 参数: 类型): 类型{
-          ...
-      }
+      let someValue: unknown = "this is a string";
+      let strLength: number = (someValue as string).length;
       ```
 
-- 自动类型判断
+  - 第二种
 
-  - TS拥有自动的类型判断机制
-  - 当对变量的声明和赋值是同时进行的，TS编译器会自动判断变量的类型
-  - 所以如果你的变量的声明和赋值时同时进行的，可以省略掉类型声明
-
-  
-
-- 类型：
-
-  |  类型   |       例子        |              描述              |
-  | :-----: | :---------------: | :----------------------------: |
-  | number  |    1, -33, 2.5    |            任意数字            |
-  | string  | 'hi', "hi", `hi`  |           任意字符串           |
-  | boolean |    true、false    |       布尔值true或false        |
-  | 字面量  |      其本身       |  限制变量的值就是该字面量的值  |
-  |   any   |         *         |            任意类型            |
-  | unknown |         *         |         类型安全的any          |
-  |  void   | 空值（undefined） |     没有值（或undefined）      |
-  |  never  |      没有值       |          不能是任何值          |
-  | object  |  {name:'孙悟空'}  |          任意的JS对象          |
-  |  array  |      [1,2,3]      |           任意JS数组           |
-  |  tuple  |       [4,5]       | 元素，TS新增类型，固定长度数组 |
-  |  enum   |    enum{A, B}     |       枚举，TS中新增类型       |
+    - ```typescript
+      let someValue: unknown = "this is a string";
+      let strLength: number = (<string>someValue).length;
+      ```
 
 
 
-- number
+##### 类型保卫与类型守护
 
-  - ```typescript
-    let decimal: number = 6;
-    let hex: number = 0xf00d;
-    let binary: number = 0b1010;
-    let octal: number = 0o744;
-    let big: bigint = 100n;
-    ```
+<img src="..\Picture\image-20220225231806225.png" alt="image-20220225231806225" style="zoom:25%;" />
 
-- boolean
+<img src="C:\Users\H\AppData\Roaming\Typora\typora-user-images\image-20220225232035688.png" alt="image-20220225232035688" style="zoom:25%;" />
 
-  - ```typescript
-    let isDone: boolean = false;
-    ```
+##### d.ts文件/declare
 
-- string
++ 安装第三方模块（例如lodash）时
 
-  - ```typescript
-    let color: string = "blue";
-    color = 'red';
-    
-    let fullName: string = `Bob Bobbington`;
-    let age: number = 37;
-    let sentence: string = `Hello, my name is ${fullName}.
-    
-    I'll be ${age + 1} years old next month.`;
-    ```
+![image-20220225193949940](..\Picture\image-20220225193949940.png)
 
-- 字面量
+原因是lodash是使用js编写的，没有类型声明，如下，camelCase函数没有类型声明
 
-  - 也可以使用字面量去指定变量的类型，通过字面量可以确定变量的取值范围
+```typescript
+import { camelCase } from 'lodash';
+const res = camelCase('hello guy')
+```
 
-  - ```typescript
-    let color: 'red' | 'blue' | 'black';
-    let num: 1 | 2 | 3 | 4 | 5;
-    ```
+这时候可以使用**declare**（其实就是一个成员在定义的时候没有声明，比如node装第三方模块，大部分都是js写的，这时候使用declare做一个单独的声明）对函数声明
 
-- any
+```typescript
+import { camelCase } from 'lodash';
+declare function camelCase(input: string): string
+const res = camelCase('hello guy')
+```
 
-  - ```typescript
-    let d: any = 4;
-    d = 'hello';
-    d = true;
-    ```
-
-- unknown
-
-  - ```typescript
-    let notSure: unknown = 4;
-    notSure = 'hello';
-    ```
-
-- void
-
-  - ```typescript
-    let unusable: void = undefined;
-    ```
-
-- never
-
-  - ```typescript
-    function error(message: string): never {
-      throw new Error(message);
-    }
-    ```
-
-- object（没啥用）
-
-  - ```typescript
-    let obj: object = {};
-    ```
-
-- array
-
-  - ```typescript
-    let list: number[] = [1, 2, 3];
-    let list: Array<number> = [1, 2, 3];
-    ```
-
-- tuple
-
-  - ```typescript
-    let x: [string, number];
-    x = ["hello", 10]; 
-    ```
-
-- **enum 枚举类型**
-
-  - ```typescript
-    enum Color {
-      Red = 0,
-      Green,
-      Blue,
-    }
-    // 使用
-    const red = Color.Red;
-    const green = Color.Green;
-    
-    // 编译成js后，枚举类型实际上是一个双向键值对对象（可以通过键获取值也可以通过值获取键）
-    "use strict";
-    var Color;
-    (function (Color) {
-        Color[Color["Red"] = 0] = "Red";
-        Color[Color["Green"] = 1] = "Green";
-        Color[Color["Blue"] = 2] = "Blue";
-    })(Color || (Color = {}));
-    // 使用
-    const red = Color.Red;
-    const green = Color.Green;
-    ```
-
-  
-  + 定义常量枚举（只能通过键获取值）
-  
-    ```typescript
-    const enum Color {
-      Red = 0,
-      Green,
-      Blue,
-    }
-    const red = Color.Red;
-    const green = Color.Green;
-    
-    // 编译成js
-    "use strict";
-    const red = 0 /* Red */;
-    const green = 1 /* Green */;
-    ```
-  
-
-+ 定义函数类型：
-
-  + ```typescript
-    // 箭头函数可以以这种形式定义
-    const add: (a: number, b: number) => number = (a, b) => {
-        return a + b;
-    };
-    
-    // 也可以这种形式
-    interface Iadd {
-        (x: number, y: number): number;
-    }
-    const add: Iadd = (a, b) => {
-        return a + b;
-    }
-    ```
+**其他解决方案：**安装d.ts文件（专门用来做类型声明的文件，应该为开发依赖）
 
 
-
-- 类型断言
-
-  - 有些情况下，变量的类型对于我们来说是很明确，但是TS编译器却并不清楚，此时，可以通过类型断言来告诉编译器变量的类型，断言有两种形式：
-
-    - 第一种
-
-      - ```typescript
-        let someValue: unknown = "this is a string";
-        let strLength: number = (someValue as string).length;
-        ```
-
-    - 第二种
-
-      - ```typescript
-        let someValue: unknown = "this is a string";
-        let strLength: number = (<string>someValue).length;
-        ```
-
-
-+ **d.ts文件/declare**
-
-  + 安装第三方模块（例如lodash）时
-
-  ![image-20220225193949940](..\Picture\image-20220225193949940.png)
-
-  原因是lodash是使用js编写的，没有类型声明，如下，camelCase函数没有类型声明
-
-  ```typescript
-  import { camelCase } from 'lodash';
-  const res = camelCase('hello guy')
-  ```
-
-  这时候可以使用**declare**（其实就是一个成员在定义的时候没有声明，比如node装第三方模块，大部分都是js写的，这时候使用declare做一个单独的声明）对函数声明
-
-  ```typescript
-  import { camelCase } from 'lodash';
-  declare function camelCase(input: string): string
-  const res = camelCase('hello guy')
-  ```
-
-  **其他解决方案：**安装d.ts文件（专门用来做类型声明的文件，应该为开发依赖）
-
-  
 
 ### 编译选项
 
