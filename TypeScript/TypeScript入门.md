@@ -180,7 +180,9 @@
 
 <img src="..\Picture\image-20220225231806225.png" alt="image-20220225231806225" style="zoom:25%;" />
 
-<img src="C:\Users\H\AppData\Roaming\Typora\typora-user-images\image-20220225232035688.png" alt="image-20220225232035688" style="zoom:25%;" />
+<img src="..\Picture\image-20220225232035688.png" alt="image-20220225232035688" style="zoom:25%;" />
+
+<img src="..\Picture\image-20220225232336109.png" alt="image-20220225232336109" style="zoom:25%;" />
 
 ##### d.ts文件/declare
 
