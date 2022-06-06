@@ -34,7 +34,7 @@
 
 ##### 2. 请求拦截
 
-​	代表：Mock.js
+​	代表：[Mock.js](http://mockjs.com/)
 
 ```javascript
 Mock.mock(/\\\\/api\\\\/visitor\\\\/list/, 'get', {
@@ -61,7 +61,7 @@ Mock.mock(/\\\\/api\\\\/visitor\\\\/list/, 'get', {
 缺点：
 
 1. 数据都是动态生成的假数据，无法真实模拟增删改查的情况
-2. 只支持ajax，不支持fetch（本质上是重写了ajax方法）
+2. 只支持ajax，不支持fetch（本质上是重写了ajax方法，两者的差别见：[AJAX 之 XHR, Fetch 的对比](https://zhuanlan.zhihu.com/p/24594294)）
 
 ##### 3. 接口管理工具
 
@@ -79,7 +79,7 @@ Mock.mock(/\\\\/api\\\\/visitor\\\\/list/, 'get', {
 
 ##### 4. 本地node服务器
 
-代表：https://github.com/typicode/json-server 
+代表：[json-server](https://github.com/typicode/json-server )
 
 优点：
 

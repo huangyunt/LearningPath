@@ -20,13 +20,15 @@ General 面板中最重要的功能就是 **"Highlight updates when components r
 
 
 
-#### Components 设置
+##### Components 设置
 
 <img src="..\Picture\image-20220222024936104.png" alt="image-20220222024936104" style="zoom:33%;" />
 
 **"Hide components where..."**
 
 此项在过滤组件树时有用。比如，大多数应用可能会在顶层有很多 Context.Provider，就可以过滤 Context 类型、不显示。当我们只关心业务逻辑层的组件时，可以过滤掉 DOM 组件，减少树的节点
+
+
 
 ##### Profiler 设置
 
