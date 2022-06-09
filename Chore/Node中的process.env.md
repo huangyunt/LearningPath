@@ -15,13 +15,21 @@
 console.log(process.env.PROT)
 ```
 
-mac 下  ```PROT=10086 node index.js```  设置
+**Windows (cmd.exe)**
 
-windows 下 ```set PROT=10086 && node index.js``` 设置
+```cmd
+set PROT=10086 && node index.js
+```
+
+**Linux, macOS (Bash)**
+
+```bash
+PROT=10086 node index.js
+```
 
 
 
-##### .env文件
+##### <a name="env">.env文件</a>
 
 + 创建
 
@@ -40,6 +48,8 @@ HOST_URL=**********
 
 
 + 读取
+
+**在cra创建的项目中，自带了dotenv解析.env，所以创建.env文件后即可**。
 
 创建 `.env` 文件后，可以自己编写代码来查找解析文件并将其写入到你的项目中，或者利用第三方的`npm`包，比如 [`dotenv`](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fmotdotla%2Fdotenv) 。
 
@@ -130,5 +140,58 @@ const { HOST_URL, API_KEY, PROT } = require('./config');
 
 
 
-#### CRA创建的项目下使用环境变量
+#### CRA创建的项目使用环境变量
+
+必须以 `REACT_APP_` 开头创建自定义环境变量，环境变量在构建期间嵌入。
+
+##### 设置临时环境变量
+
+**Windows (cmd.exe)**
+
+```cmd
+set "REACT_APP_SECRET_CODE=abcdef" && npm start
+```
+
+（注意：变量赋值需要用引号包裹，以避免尾随空格。）
+
+**Windows (Powershell)**
+
+```Powershell
+($env:REACT_APP_SECRET_CODE = "abcdef") -and (npm start)
+```
+
+**Linux, macOS (Bash)**
+
+```bash
+REACT_APP_SECRET_CODE=abcdef npm start
+```
+
+
+
+#####  `.env` 中添加环境变量
+
+见<a href="#env">上文</a>设置。
+
+
+
+##### 其他 `.env` 文件
+
+> 注意：此功能 **适用于 `react-scripts@1.0.0` 及更高版本**。
+
+- `.env`：默认。
+- `.env.local`：本地覆盖。**除 test 之外的所有环境都加载此文件**。
+- `.env.development`, `.env.test`, `.env.production`：设置特定环境。
+- `.env.development.local`, `.env.test.local`, `.env.production.local`：设置特定环境的本地覆盖。
+
+左侧的文件比右侧的文件具有更高的优先级：
+
+- `npm start`: `.env.development.local`, `.env.development`, `.env.local`, `.env`
+- `npm run build`: `.env.production.local`, `.env.production`, `.env.local`, `.env`
+- `npm test`: `.env.test.local`, `.env.test`, `.env` (注意没有 `.env.local` )
+
+
+
+##### `NODE_ENV` 的特殊内置环境变量
+
+有一个名为 `NODE_ENV` 的特殊内置环境变量。可以从 `process.env.NODE_ENV` 中读取。运行 `npm start` 时，它总是等于 `'development'` ，运行 `npm test` 它总是等于 `'test'` ，运行 `npm run build` 来生成一个生产 bundle(包) 时，它总是等于 `'production'` 。**`NODE_ENV`无法手动覆盖。** 
 
