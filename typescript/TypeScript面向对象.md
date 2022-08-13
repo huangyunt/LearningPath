@@ -59,8 +59,8 @@
   - TS中属性具有三种修饰符：
 
     - public（默认值），可以在类、子类和对象中修改
-    - protected ，可以在类、子类中修改
-    - private ，可以在类中修改
+    - protected ，可以在类、子类中修改，不能在对象中修改和访问
+    - private ，仅仅能在这个类中进行在这个属性的访问。在子类和类的实现的对象中都不能访问和修改
 
   - 示例：
 
@@ -118,6 +118,7 @@
         }
         
         const p = new Person('孙悟空', 18);
+        console.log(p.name) // 不能访问
         p.name = '猪八戒';// 不能修改
         ```
 
@@ -142,7 +143,7 @@
         
             constructor(name: string, age: number){
                 super(name, age);
-                this.name = name; //子类中不能修改
+                this.name = name; //子类中不能修改和访问
             }
         }
         
@@ -386,9 +387,11 @@
         ```
 
       - 也可以在函数后手动指定泛型
+      
+      
 
   - 可以同时指定多个泛型，泛型间使用逗号隔开：
-
+  
     - ```typescript
       function test<T, K>(a: T, b: K): K{
           return b;
@@ -399,8 +402,10 @@
 
     - 使用泛型时，完全可以将泛型当成是一个普通的类去使用
 
+    
+  
   - 类中同样可以使用泛型：
-
+  
     - ```typescript
       class MyClass<T>{
           prop: T;
@@ -410,9 +415,11 @@
           }
       }
       ```
-
+      
+      
+  
   - 除此之外，也可以对泛型的范围进行约束
-
+  
     - ```typescript
       interface MyInter{
           length: number;
@@ -422,10 +429,28 @@
           return arg.length;
       }
       ```
-
+  
     - 使用T extends MyInter表示泛型T必须是MyInter的子类，不一定非要使用接口类和抽象类同样适用。
-
-
-
-
+    
+    - ![image-20220225230409833](..\Picture\image-20220225230409833.png)
+    
+    
+  
+  + 还有泛型接口，泛型别名
+  
+    + ```typescript
+      interface IPerson<T, U> {
+          key: T;
+          name: U;
+      }
+      
+      type ITypeArr<T> = Array<T>
+      
+      const p: IPerson<string, number> = {
+          key: "hyz",
+          name: 13
+      }
+      ```
+  
+    **总结一下：泛型就是不预先指定具体的类型，等到使用时再指定类型的一种特性**
 

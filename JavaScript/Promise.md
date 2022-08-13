@@ -4,8 +4,6 @@
 
 感觉promise的思想非常有意思，为了代码的可读性和可维护性提供了一种新的异步编程方法，接触了一段时间的工程代码也让我体会到代码可维护，可拓展的必要性。
 
-
-
 ### 为什么要用Promise？
 
 对于异步操作，例如文件读取
@@ -31,7 +29,6 @@ fs.readFile('./c.txt', 'utf-8', function(err, data) {
     }
     console.log(data);
 })
-
 ```
 
 输出结果：
@@ -98,13 +95,9 @@ myReadFile('./a.txt')
 
 由于异常穿透，异常只需要在最后捕获，代码的可读性和维护性也更高，解决了回调地狱的问题。
 
-
-
 ### Promise的工作流程
 
 ![image-20210321164956018](../Picture/image-20210321164956018.png)
-
-
 
 ### 如何改变promise对象的状态？
 
@@ -117,7 +110,6 @@ myReadFile('./a.txt')
             //3. 抛出错误
             //throw '出问题了';// pending  =>  rejected
         });
-
 ```
 
 + Promise对象初始状态
@@ -131,10 +123,6 @@ myReadFile('./a.txt')
 + Promise对象失败状态
 
 ![image-20210322004718603](../Picture/image-20210322004718603.png)
-
-
-
-
 
 ### Promise Api
 
@@ -172,7 +160,6 @@ myReadFile('./a.txt')
 ##### then的链式调用
 
 ```javascript
-        
 let p = new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve('OK');
@@ -225,8 +212,6 @@ Promise.reject(reason)方法返回一个失败的promise对象（无论reason是
 #### Promise.prototype.catch
 
 **catch()** 方法返回一个Promise，只处理拒绝的情况。它的行为与调用[`Promise.prototype.then(undefined, onRejected)`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/then)相同。
-
-
 
 ### Promise关键问题
 
@@ -323,8 +308,6 @@ Async/Await 是js异步编程的终极解决方案
         }
 ```
 
-
-
 #### Await表达式
 
 + await 右侧的表达式一般为 promise 对象, 但也可以是其它的值
@@ -356,8 +339,6 @@ Async/Await 是js异步编程的终极解决方案
         main();
 ```
 
-
-
 ### 实践：
 
 ```javascript
@@ -384,10 +365,7 @@ async function main(){
         console.log(e.code);
     }
 }
-
 ```
-
-
 
 ### async await 封装ajax
 
@@ -429,35 +407,31 @@ async function main(){
 </body>
 ```
 
-
-
 ```
 async function async1() {
     console.log('async1 start')
     await async2()
     console.log('async1 end')
 }
-    
+
 async function async2() {
     console.log('async2')
 }
-    
+
 console.log('script start')
 
 setTimeout(function () {
     console.log('setTimeout')
 }, 0)
-    
+
 async1();
-    
+
 new Promise(function (resolve) {
     console.log('promise1')
     resolve()
 }).then(function () {
     console.log('promise2')
 })
-    
+
 console.log('script end')
-
 ```
-

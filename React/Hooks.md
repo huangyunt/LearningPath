@@ -34,15 +34,13 @@
 
 `useEffect()`的作用就是指定一个副效应函数，组件每渲染一次，该函数就执行一次。**组件首次在网页 DOM 加载后，副效应函数也会执行。**
 
-
-
-#####  useEffect指定依赖项
+##### useEffect指定依赖项
 
 有时候，我们不希望`useEffect()`每次渲染都执行，这时可以使用它的第二个参数，使用一个数组指定副效应函数的依赖项，只有依赖项发生变化，才会执行。
 
 如果上例改为
 
-```react
+```javascript
 function Welcome(props) {
   useEffect(() => {
     document.title = '加载完成';
@@ -53,8 +51,6 @@ function Welcome(props) {
 
 便只会在组件首次挂载时执行函数，相当于class component中的componentDidMount
 
-
-
 ##### useEffect() 的用途
 
 只要是副效应，都可以使用`useEffect()`引入。它的常见用途有下面几种。
@@ -63,8 +59,6 @@ function Welcome(props) {
 - 事件监听或订阅（setting up a subscription）
 - 改变 DOM（changing the DOM）
 - 输出日志（logging）
-
-
 
 ##### useEffect返回值
 
@@ -85,15 +79,13 @@ function Welcome(props) {
 
 **实际使用中，由于副效应函数默认是每次渲染都会执行，所以清理函数不仅会在组件卸载时执行一次，每次副效应函数重新执行之前，也会执行一次，用来清理上一次渲染的副效应。**
 
-
-
 ##### useEffect常见问题
 
 ###### **使用useEffect应该在依赖的变量中指明定义的函数会用到哪些state或者props**
 
 effect 可能会使用一些频繁变化的值。可能会忽略依赖列表中 state，但这通常会引起 Bug：<span name = "233"> </span>
 
-```react
+```javascript
 function Counter() {
   const [count, setCount] = useState(0);
 
@@ -112,7 +104,7 @@ function Counter() {
 
 指定 `[count]` 作为依赖列表就能修复这个 Bug，但会导致每次改变发生时定时器都被重置。事实上，每个 `setInterval` 在被清除前都会调用一次（等于说直接使用 `setTimeout`就行了）。要解决这个问题，可以使用类似setState函数式更新的操作，不依赖外部count变量，它允许我们指定 state 该如何改变而不用引用state或者props
 
-```react
+```javascript
 function Counter() {
   const [count, setCount] = useState(0);
 
@@ -125,8 +117,6 @@ function Counter() {
 }
 ```
 
-
-
 ##### useLayoutEffect vs. useEffect
 
 useLayoutEffect 和 useEffect 的传参一致，但有以下区别
@@ -136,8 +126,6 @@ useLayoutEffect 和 useEffect 的传参一致，但有以下区别
 
 通常情况下 useLayoutEffect 会用在做动效和记录 layout 的一些特殊场景（比如防止渲染闪烁，在渲染前再给你个机会去改 DOM）。一般不需要使用 useLayoutEffect。
 
-
-
 ### useRef
 
 当需要存放一个数据，需要无论在哪里都取到最新状态时，需要使用 useRef，**ref 是一种可变数据。**
@@ -146,7 +134,7 @@ useLayoutEffect 和 useEffect 的传参一致，但有以下区别
 
 可以引入<code>useRef</code>解决这个问题
 
-```react
+```javascript
 function Counter() {
   const [count, setCount] = useState(0);
   const currentCount = useRef(count);
@@ -163,8 +151,6 @@ function Counter() {
 }
 ```
 
-
-
 ### useState、useRef 如何决策用哪种来维护状态
 
 useRef 生成的可变对象，因为使用起来就跟普通对象一样，赋值时候 React 是无法感知到值变更的，所以也不会触发组件重绘。利用其与 useState 的区别，我们一般这样区分使用：
@@ -178,13 +164,11 @@ useRef 生成的可变对象，因为使用起来就跟普通对象一样，赋�
 
 > 比如，需要声明一个不可变的值时，可以这样：
 
-> ```
+> ```javascript
 > const [immutable] = useState(someState);
 > ```
 
 > 不返回变更入口函数。useRef 虽然可以借助 TypeScript 达到语法检测上的 immutable，但实际还是 mutable 的。
-
-
 
 ### useContext
 
@@ -192,7 +176,7 @@ useRef 生成的可变对象，因为使用起来就跟普通对象一样，赋�
 
 `React.createContext` 新建context
 
-```
+```javascript
 const MyContext = React.createContext(defaultValue);
 ```
 
@@ -200,13 +184,9 @@ const MyContext = React.createContext(defaultValue);
 
 **只有**当组件所处的树中没有匹配到 Provider 时，其 `defaultValue` 参数才会生效。此默认值有助于在不使用 Provider 包装组件的情况下对组件进行测试。**注意：将 `undefined` 传递给 Provider 的 value 时，消费组件的 `defaultValue` 不会生效。**
 
-
-
 `Context.Provider`
 
 每个 Context 对象都会返回一个 Provider React 组件，它允许消费组件订阅 context 的变化。
-
-
 
 ##### useContext使用
 
@@ -214,7 +194,7 @@ const MyContext = React.createContext(defaultValue);
 
 当组件上层最近的 `<MyContext.Provider>` 更新时，该 Hook 会触发重渲染，并使用最新传递给 `MyContext` provider 的 context `value` 值。即使祖先使用 [`React.memo`](https://zh-hans.reactjs.org/docs/react-api.html#reactmemo) 或 [`shouldComponentUpdate`](https://zh-hans.reactjs.org/docs/react-component.html#shouldcomponentupdate)，也会在组件本身使用 `useContext` 时重新渲染。
 
-```react
+```javascript
 import React, { useContext, useState } from "react";
 import { ThemeContext, themes } from "./utils/index";
 
@@ -257,10 +237,7 @@ function ThemedButton() {
         </button>
     );
 }
-
 ```
-
-
 
 ### useMemo
 
@@ -269,30 +246,26 @@ useMemo 主要有两个作用：
 1. 缓存一些耗时计算，通过声明计算结果的依赖是否变更，来重用上次计算结果
 2. 保证引用不变，针对下游使用 React.memo 的组件进行性能优化（useCallback 也有一样的作用）
 
-
-
 比如，计算耗时的 fibonacci 数列，就可以用 useMemo 来优化在 n 不变的情况下，二次渲染的性能
 
 `useMemo(() => {  return fibonacci(props.n) }, [props.n]); `
-
-
 
 ### useCallback
 
 useCallback 是简化版的 useMemo，方便缓存函数引用。下面的代码是等价的：
 
-```JavaScript
+```javascript
 const memoCallback = useCallback((...args) => {
   // DO SOMETHING
 }, [...deps]);
 ```
 
-> ```JavaScript
+> ```javascript
 > const memoCallback = useMemo(() => (...args) => {
 >   // DO SOMETHING
 > }, [...deps]);
 > ```
->
+> 
 > 在么有遇到性能问题时，不要使用 useCallback 和 useMemo，性能优化先交给框架处理解决。手工的微优化在没有对框架和业务场景有深入了解时，可能出现性能劣化。
 
 > [致命的 useCallback/useMemo（翻译）](https://bytedance.feishu.cn/docs/doccnKcSsW0lazRObCmw3GlGkmd) 
@@ -300,8 +273,6 @@ const memoCallback = useCallback((...args) => {
 > [useCallback hell问题总结](https://bytedance.feishu.cn/docs/doccn9SDGhQJ6mM58BxjfRJFs3d) 
 
 > 关于如何减少 useCallback 看 **[第二天](https://bytedance.feishu.cn/docs/doccnmgIb5KcV3F0zeE47o6PvCh#KQKJ2M)**
->
-> 
 
 ### 组件通信
 
@@ -317,7 +288,7 @@ const memoCallback = useCallback((...args) => {
 
 先看青铜解决方案：
 
-```JavaScript
+```javascript
 function Grandpa() {
   const [someMoneyForMe] = useState(100);
   const [someMoneyForDaddy] = useState(101);
@@ -344,13 +315,11 @@ function Me(props: { money: number }) {
 
 Daddy 组件会透传爷爷给孙子的组件给 Me。这种方案的缺点很明显，以后爷爷要给 Daddy 和 Me 发糖果的时候，Daddy 还得加字段。
 
-
-
 **将孙子组件的 props 封装在一个固定字段中**
 
 按照 1 的方案，我们可以固定给 Daddy 添加一个 sonProps 的字段，然后将 Grandpa 需要传给孙子的状态全部通过 sonProps 传递
 
-```JavaScript
+```javascript
 function Grandpa() {
   const [someMoneyForMe] = useState(100);
   const [someMoneyForDaddy] = useState(101);
@@ -377,13 +346,11 @@ function Me(props: { money: number }) {
 
 这样以后要给 Me 加字段，就不用改 Daddy 了。**但要测试 Daddy 时还得 mock Me 组件的数据，Daddy 和 Son 耦合。**
 
-
-
 **通过 children 透传**
 
 children 类似于 vue 中的 slot，可以完成一些嵌套组件通信的功能
 
-```JavaScript
+```javascript
 function Grandpa() {
   const [someMoneyForMe] = useState(100);
   const [someMoneyForDaddy] = useState(101);
@@ -418,15 +385,11 @@ function Me(props: { money: number }) {
 
 <code><Daddy money={someMoneyForDaddy} me={<Me money={someMoneyForMe} /> </code>
 
-
-
 **三种方案的决策**
 
 1. 第一种方案一般用于固定结构和跨组件有互相依赖的场景，多见于 UI 框架中的复合组件与原子组件的设计中
 2. 第二种常用在嵌套层级不深的业务代码中，比如表单场景。**优点是顶层 Grandpa 的业务收敛度很高，一眼能看清 UI 结构及状态绑定关系，相当于拍平了 React 组件树**
 3. 第三种比较通用，适合复杂嵌套透传场景。缺点是范式代码较多，且会造成 react dev tools 层级过多；Context 无法在父组件看出依赖关系，必须到子组件文件中才能知道数据来源
-
-
 
 ### 组件的生命周期
 
@@ -443,8 +406,6 @@ Commit 阶段是拿着 render 返回的结果，去同步 DOM 更新的阶段。
 1. DOM 更新结束
 
 此时 DOM 已经更新完成，代码能感知到的部分 代码上的体现就是执行 useEffect
-
-
 
 ### React 性能优化思路
 
@@ -463,11 +424,9 @@ Commit 阶段是拿着 render 返回的结果，去同步 DOM 更新的阶段。
 2. **父组件重新渲染，导致子组件重新渲染，但是父组件的 props 没有改变**
 3. **父组件重新渲染，导致子组件重新渲染，但是父组件传递的 props 改变**
 
-
-
 针对第二点，在FC中，可以通过memo减少rerender
 
-```react
+```javascript
 function Component(props) {
    /* 使用 props 渲染 */
 }
@@ -492,8 +451,6 @@ function areEqual(prevProps, nextProps) {
 export default React.memo(MyComponent, areEqual);
 ```
 
-
-
 ### 组件性能优化
 
 React 组件是一个树形结构，且每个节点都是懒计算的（类似于 Thunk 的概念）。当一个节点不需要重新计算（重绘）时，他的子树都不会计算（重绘）。**所以我们做性能优化的目标，就是在尽量离根节点近的位置，拦截不必要的节点重算，从而减少重绘的计算量。**
@@ -505,7 +462,7 @@ React 组件是一个树形结构，且每个节点都是懒计算的（类似�
 1. ```CSS
    React.memo(Component, areEqual);
    ```
-
+   
    Component
 
 组件
@@ -522,19 +479,13 @@ areEqual 如果不传，默认使用
 
 做为比较函数。
 
-
-
 ##### 如何定位优化点
 
 使用前一章节提到 React DevTools 中的 Profiling 功能，record 发生卡顿的操作，从耗时长的组件逐个查看，找到那些跟此次操作无关的上层渲染节点，尝试使用 React.memo 包裹这些组件。
 
-
-
 ##### 不要为了优化而优化
 
 在没有性能问题前，不用去纠结是否要用 Profiling、React.memo、useMemo、useCallback 去优化性能，这些不一定能带来性能提升，反而肯定会带来首屏的性能下降。大多数情况下，React 现有算法以能满足性能需求。
-
-
 
 ##### 对于一个组件，有三样东西会让她重绘
 
@@ -544,7 +495,7 @@ areEqual 如果不传，默认使用
 
 所以用 React.memo 包裹之后，并不是说性能就会有多大的提高。如果组件中依赖的 context 中，有一部分并不是此组件需要的数据，但会经常变更，也会导致组件经常重绘。这时候我们可以增加一层组件，把依赖 context 中的数据，通过增加的一层父组件取出来，然后通过 props 传给真正渲染的组件，把 React.memo 加在真正渲染的组件上，来达到屏蔽 context 变更引起的重绘问题。
 
-```JavaScript
+```javascript
 import { useMemo, useContext } from 'react';
 import { SomeContext } from './SomeContext';
 

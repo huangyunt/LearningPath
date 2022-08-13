@@ -1,5 +1,3 @@
-
-
 # JavaSrcipt原型
 
 首先，要明确几个点：
@@ -20,7 +18,7 @@
 
 3. 实例
    f1和f2是Foo这个对象的两个实例，这两个对象也有属性__proto__，指向构造函数的原型对象，这样子就可以像上面1所说的访问原型对象的所有方法啦。
-
+   
    ![image-20210808204737157](../Picture/Snipaste_2021-08-08_20-48-18.png)
 
 另外：
@@ -33,14 +31,11 @@
 
 最后，Object.prototype的__proto__属性指向null（原型链的终点）
 
-
-
 总结：
+
 1. 对象有属性__proto__,指向该对象的构造函数的原型对象。
 2. 方法除了有属性__proto__,还有属性prototype，prototype指向该方法的原型对象。
 3. 标准化获取对象的构造函数的原型：不要用obj.__proto__，用Object.getPrototypeof(obj)。
-
-
 
 ## 原型对象中的constructor
 
@@ -49,4 +44,3 @@
 ```
 function 
 ```
-
